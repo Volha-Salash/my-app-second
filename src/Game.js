@@ -12,7 +12,8 @@ class Game extends React.Component {
         ],
         stepNumber: 0,
         xIsNext: true,
-        isAscending: true
+        isAscending: true,
+        clickCount:0 // добавленный счетчик
       };
     }
   
@@ -28,12 +29,13 @@ class Game extends React.Component {
         history: history.concat([
           {
             squares: squares,
-            // Store the index of the latest moved square
+            
             latestMoveSquare: i
           }
         ]),
         stepNumber: history.length,
-        xIsNext: !this.state.xIsNext
+        xIsNext: !this.state.xIsNext,
+        clickCount: this.state.clickCount+1 //увеличиваем счетчик кликов
       });
     }
   
@@ -57,7 +59,7 @@ class Game extends React.Component {
       const winInfo = calculateWinner(current.squares);
       const winner = winInfo.winner;
   
-      let moves = history.map((step, move) => {
+      const moves = history.map((step, move) => {
         const latestMoveSquare = step.latestMoveSquare;
         const col = 1 + latestMoveSquare % 3;
         const row = 1 + Math.floor(latestMoveSquare / 3);
@@ -115,7 +117,7 @@ class Game extends React.Component {
   
   // ========================================
   
-  //root.render(<Game />);
+
   
   function calculateWinner(squares) {
     const lines = [
