@@ -1,19 +1,9 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
 import './App.css';
+const root = createRoot(document.getElementById('root'));
+root.render(<Square />);
 
-const container = document.getElementById('root');
-const root = createRoot(container);
-
-root.render(
-  <React.StrictMode>
-          <App />
-     </React.StrictMode>
-);
-/*import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
 
 function Square(props) {
   const className = 'square' + (props.highlight ? ' highlight' : '');
@@ -123,7 +113,7 @@ class Game extends React.Component {
       return (
         <li key={move}>
           {/* Bold the currently selected item */ 
-        /*}
+        }
           <button
             className={move === stepNumber ? 'move-list-item-selected' : ''}
             onClick={() => this.jumpTo(move)}>{desc}
@@ -171,8 +161,7 @@ class Game extends React.Component {
 
 // ========================================
 
-/*
-ReactDOM.render(<Game />, document.getElementById("root"));
+root.render(<Game />);
 
 function calculateWinner(squares) {
   const lines = [
@@ -209,4 +198,3 @@ function calculateWinner(squares) {
     isDraw: isDraw,
   };
 }
-*/

@@ -1,3 +1,5 @@
+
+/*
 import React from 'react';
 import './App.css';
 
@@ -86,3 +88,4 @@ handleClick(index){
   }
 
   export default App;
+  */
