@@ -1,4 +1,7 @@
-import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+
 
 function Square(props) {
     const className = 'square' + (props.highlight ? ' highlight' : '');
@@ -43,4 +46,17 @@ class Board extends React.Component {
     
   }
   
-export default Board;  
+
+const mapStateToProps = (state) => {
+  return {
+    squares: state.squares,
+    winLine: state.winLine
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ squareClick }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);
+

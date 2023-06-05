@@ -25,3 +25,4 @@ export function addSquare(squares, latestMoveSquare) {
       type: 'HANDLE_SORT_TOGGLE'
     };
   }
+  

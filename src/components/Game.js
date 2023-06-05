@@ -1,21 +1,8 @@
-import React from 'react';
-import { addSquare, handleClick, jumpTo, handleSortToggle } from '../actions';
-import Board from './Board';
-import {connect} from 'react-redux'
-//import store from './store';
-//import calculateWinner from './utils/calculateWinner';
-//import calculateRowCol from './utils/calculateRowCol';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addSquare, handleClick, jumpTo, handleSortToggle } from './actions';
+import store from './store';
 
-
-const mapStateToProps = state => {
-  return {
-      history:state.history,
-      stepNumber: state.stepNumber,
-      xlsNext:state.xlsNext,
-      isAscending: state.isAscending,
-      clickCount:state.clickCount
-  };
-};
 
 class Game extends React.Component {
   constructor(props) {
@@ -121,6 +108,17 @@ class Game extends React.Component {
 }
 
 
+const mapStateToProps = (state) => {
+  return {
+    history: state.history,
+    stepNumber: state.stepNumber,
+    xIsNext: state.xIsNext,
+    isAscending: state.isAscending
+  }
+}
 
-export default connect(mapStateToProps(Game));
-//export default Game;
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ addSquare, handleClick, jumpTo, handleSortToggle }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
