@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from 'redux'
 
 function historyReducer(state = [{ squares: Array(9).fill(null) }], action) {
   switch (action.type) {

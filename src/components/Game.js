@@ -1,19 +1,21 @@
-import { createStore } from 'redux';
-import rootReducer from './reducers';
-import {
-  addSquare,
-  handleClick,
-  jumpTo,
-  handleSortToggle
-} from './actions';
+import React from 'react';
+import { addSquare, handleClick, jumpTo, handleSortToggle } from '../actions';
 import Board from './Board';
-import calculateWinner from './utils/calculateWinner';
-import calculateRowCol from './utils/calculateRowCol';
-import React from "react";
-import classNames from "classnames";
+import {connect} from 'react-redux'
+//import store from './store';
+//import calculateWinner from './utils/calculateWinner';
+//import calculateRowCol from './utils/calculateRowCol';
 
-const store = createStore(rootReducer);
 
+const mapStateToProps = state => {
+  return {
+      history:state.history,
+      stepNumber: state.stepNumber,
+      xlsNext:state.xlsNext,
+      isAscending: state.isAscending,
+      clickCount:state.clickCount
+  };
+};
 
 class Game extends React.Component {
   constructor(props) {
@@ -53,12 +55,17 @@ class Game extends React.Component {
   }
 
   render() {
-    const state = store.getState();
-    const history = state.history;
-    const stepNumber = state.stepNumber;
+    const history = this.props.history;
+    const stepNumber = this.props.stepNumber;
     const current = history[stepNumber];
     const winInfo = calculateWinner(current.squares);
     const winner = winInfo.winner;
+   // const state = store.getState();
+    //const history = state.history;
+    //const stepNumber = state.stepNumber;
+    //const current = history[stepNumber];
+   // const winInfo = calculateWinner(current.squares);
+   // const winner = winInfo.winner;
 
     let moves = history.map((step, move) => {
       const moves = history.map((step, move) => {
@@ -70,43 +77,50 @@ class Game extends React.Component {
         return (
           <li key={move}>
             <button
-              className={classNames({ bold: move === stepNumber })}
               onClick={() => this.jumpTo(move)}
             >
               {desc} ({calculateRowCol(latestMoveSquare)})
             </button>
           </li>
         );
-      });
-
-      let status;
-      if (winner) {
-        status = "Winner: " + winner;
-      } else if (winInfo.isDraw) {
-        status = "Draw!";
-      } else {
-        status = "Next player: " + (this.state.xIsNext ? "X" : "O");
       }
+      )
+    });
 
-      return (
-        <div className="game">
-          < div className="game-board" >
-            <Board
-              squares={current.squares}
-              onClick={i => this.handleClick(i)}
-              winLine={winInfo.line}
-            />
-          </div >
-          <div className="game-info">
-            <div className="status">{status}</div>
-            <button onClick={() => this.handleSortToggle()}>
-              {state.isAscending ? "Descending" : "Ascending"}
-            </button>
-            <ol>{state.isAscending ? moves : moves.reverse()}</ol>
-          </div>
+
+    let status;
+    if (winner) {
+      status = "Winner: " + winner;
+    } else if (winInfo.isDraw) {
+      status = "Draw!";
+    } else {
+      status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+    }
+
+
+
+    return (
+      <div className="game">
+        < div className="game-board" >
+          <Board
+            squares={current.squares}
+            onClick={i => this.handleClick(i)}
+            winLine={winInfo.line}
+          />
         </div >
-      );
-    }
-    }
+        <div className="game-info">
+          <div className="status">{status}</div>
+          <button onClick={() => this.handleSortToggle()}>
+            {state.isAscending ? "Descending" : "Ascending"}
+          </button>
+          <ol>{state.isAscending ? moves : moves.reverse()}</ol>
+        </div>
+      </div >
+    );
+  }
+}
 
-export default Game;
+
+
+export default connect(mapStateToProps(Game));
+//export default Game;
