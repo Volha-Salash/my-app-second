@@ -1,6 +1,4 @@
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-
 
 
 function Square(props) {
@@ -54,9 +52,5 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ squareClick }, dispatch);
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Board);
+export default connect(mapStateToProps)(Board);
 
