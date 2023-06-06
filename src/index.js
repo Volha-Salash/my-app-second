@@ -1,34 +1,24 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import rootReducer from './reducer'
-import Game from './components/Game';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import {Provider} from 'react-redux';
 import './App.css';
-//import store from './store';
+import { Game } from './components/_Game';
+import { configureStore } from '@reduxjs/toolkit';
+import rootReducer from './reducers/reducer';
 
-const InitialState = {
-    history:[
-        {
-            squares: Array(9).fill(null)
-        }
-    ],
-    stepNumber: 0,
-      xIsNext: true,
-      isAscending: true,
-      clickCount: 0 // добавленный счетчик
-    };
-  
-const store = createStore(rootReducer, InitialState);
+const store = configureStore({
+  reducer: rootReducer,
+})
 
+const root = createRoot(document.getElementById('root'));
 
-
-ReactDOM.render(
-      <React.StrictMode>
-      <Provider store={store}>
+root.render(
+    <Provider store={store}>
         <Game />
-      </Provider>
-    </React.StrictMode>,
-    document.getElementById('root')
-  )
+    </Provider>
+);
+
+
+
+
 
