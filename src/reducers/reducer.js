@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-
+/*
 const InitialState = {
   history: [
     {
@@ -11,6 +11,21 @@ const InitialState = {
   isAscending: true,
   clickCount: 0 // добавленный счетчик
 };
+*/
+
+function historyReducer(state = [{ squares: Array(9).fill(null) }], action) {
+  switch (action.type) {
+    case 'ADD_SQUARE':
+      return state.concat([{
+        squares: action.squares,
+        latestMoveSquare: action.latestMoveSquare
+      }]);
+    default:
+      return state;
+  }
+}
+
+/*
 function historyReducer(state=InitialState, action) {
   switch (action.type) {
     case 'ADD_SQUARE':
@@ -28,6 +43,7 @@ function historyReducer(state=InitialState, action) {
       return state;
   }
 }
+*/
 
 function stepNumberReducer(state = 0, action) {
   switch (action.type) {
@@ -55,12 +71,23 @@ function isAscendingReducer(state = true, action) {
       return state;
   }
 }
+const InitialState = { clickCount: 0 };
+const clickCountReducer = (state = InitialState, action) =>{
+switch (action.type) {
+  case 'INCREMENT_CLICK_COUNT':
+    return {
+      ...state, clickCount: state.clickCount + 1
+    };
+  default: return state;
+}
+};
 
 const rootReducer = combineReducers({
   history: historyReducer,
   stepNumber: stepNumberReducer,
   xIsNext: xIsNextReducer,
-  isAscending: isAscendingReducer
+  isAscending: isAscendingReducer,
+  clickCountReducer: clickCountReducer
 });
 
 export default rootReducer;

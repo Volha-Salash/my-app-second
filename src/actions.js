@@ -25,6 +25,12 @@ export function handleSortToggle() {
     type: 'HANDLE_SORT_TOGGLE'
   };
 }
+
+export const incrementClickCount = ()=>({
+  type:'INCREMENT_CLICK_COUNT'
+});
+
+
 /*
 export function turn_change(history, squares) {
   return {

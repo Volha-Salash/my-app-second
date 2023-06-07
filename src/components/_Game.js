@@ -2,35 +2,38 @@ import React from 'react';
 import Board from './Board.js';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { addSquare, handleClick, jumpTo, handleSortToggle } from '../actions.js';
+import { addSquare, handleClick, jumpTo, handleSortToggle, incrementClickCount } from '../actions.js';
+
 
 
 class _Game extends React.Component {
   constructor(props) {
-      super(props);
-      this.state = {
-        history: [
-          {
-            squares: Array(9).fill(null)
-          }
-        ],
-        stepNumber: 0,
-        xIsNext: true,
-        isAscending: true,
-        clickCount:0 // добавленный счетчик
-      };
-    }
+    super(props);
+    this.state = {
+      history: [
+        {
+          squares: Array(9).fill(null)
+        }
+      ],
+      
+      stepNumber: 0,
+      xIsNext: true,
+      isAscending: true,
+      clickCount: 0 // добавленный счетчик
+    };
+  }
 
   handleClick(i) {
-    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const history = this.props.history.slice(0, this.props.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     if (calculateWinner(squares).winner || squares[i]) {
       return;
     }
-    squares[i] = this.state.xIsNext ? "X" : "O";
+    squares[i] = this.props.xIsNext ? "X" : "O";
     this.props.addSquare(history, squares);
     this.props.handleClick(i);
+    this.props.incrementClickCount();
   }
 
   jumpTo(step) {
@@ -41,21 +44,33 @@ class _Game extends React.Component {
     this.props.handleSortToggle();
   }
 
+
   render() {
-    const history = this.state.history;
-    const current = history[this.props.stepNumber];
+    const history = this.props.history;
+    const stepNumber = this.props.stepNumber;
+    const current = history[stepNumber];
     const winInfo = calculateWinner(current.squares);
-      const winner = winInfo.winner;
+    const winner = winInfo.winner;
 
     const moves = history.map((step, move) => {
-      const desc = move ? "Move #" + move : "Game start";
+      const latestMoveSquare = step.latestMoveSquare;
+      const col = 1 + latestMoveSquare % 3;
+      const row = 1 + Math.floor(latestMoveSquare / 3);
+      const desc = move ?
+        `Go to move #${move} (${col}, ${row})` :
+        'Go to game start';
       return (
         <li key={move}>
-          <a href="/" onClick={() => this.props.jumpTo(move)}>{desc}</a>
+          {/* Bold the currently selected item */ 
+        }
+          <button
+            className={move === stepNumber ? 'move-list-item-selected' : ''}
+            onClick={() => this.props.jumpTo(move)}>{desc}
+          </button>
         </li>
       );
     });
-
+    
     let status;
     if (winner) {
       status = "Winner: " + winner;
@@ -63,11 +78,11 @@ class _Game extends React.Component {
       if (winInfo.isDraw) {
         status = "Draw";
       } else {
-        status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+        status = "Next player: " + (this.props.xIsNext ? "X" : "O");
       }
     }
 
-    const isAscending = this.state.isAscending;
+    const isAscending = this.props.isAscending;
     if (!isAscending) {
       moves.reverse();
     }
@@ -75,11 +90,11 @@ class _Game extends React.Component {
     return (
       <div className="game">
         <div className="game-board">
-          <Board
-            squares={current.squares}
-            onClick={i => this.handleClick(i)}
-            winLine={winInfo.line}
-          />
+        <Board
+              squares={current.squares}
+              onClick={i => this.handleClick(i)}
+              winLine={winInfo.line}
+            />
         </div>
         <div className="game-info">
           <div>{status}</div>
@@ -134,12 +149,19 @@ function mapStateToProps(state) {
     history: state.history,
     stepNumber: state.stepNumber,
     xIsNext: state.xIsNext,
-    isAscending: state.isAscending
+    isAscending: state.isAscending,
+    clickCount: state.clickCount
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({addSquare, handleClick, jumpTo, handleSortToggle}, dispatch);
+  return bindActionCreators({ 
+    addSquare, 
+    handleClick, 
+    jumpTo, 
+    handleSortToggle, 
+    incrementClickCount 
+  }, dispatch);
 }
 
 export const Game = connect(mapStateToProps, mapDispatchToProps)(_Game)
