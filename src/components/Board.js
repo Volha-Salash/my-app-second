@@ -1,46 +1,31 @@
-import React from 'react';
-
-function Square(props) {
-    const className = 'square' + (props.highlight ? ' highlight' : '');
-    return (
-      <button
-        className={className}
-        onClick={props.onClick}>
-        {props.value}
-      </button>
-    );
-  }
+import React from "react";
+import Square from "./Square";
 
 class Board extends React.Component {
-    renderSquare(i) {
-      const winLine = this.props.winLine;
-      return (
-        <Square
-          key={i}
-          value={this.props.squares[i]}
-          onClick={() => this.props.onClick(i)}
-          highlight={winLine && winLine.includes(i)}
-        />
-      );
-    }
-  
-    render() {
-      // Use two loops to make the squares
-      const boardSize = 3;
-      let squares = [];
-      for (let i = 0; i < boardSize; ++i) {
-        let row = [];
-        for (let j = 0; j < boardSize; ++j) {
-          row.push(this.renderSquare(i * boardSize + j));
-        }
-        squares.push(<div key={i} className="board-row">{row}</div>);
-      }
-  
-      return (
-        <div>{squares}</div>
-      );
-    }
-    
+  renderSquare(number) {
+    return <Square number={number} />;
   }
-  
-export default Board;  
+  render() {
+    return (
+      <div>
+        <div className="row">
+          {this.renderSquare(0)}
+          {this.renderSquare(1)}
+          {this.renderSquare(2)}
+        </div>
+        <div className="row">
+          {this.renderSquare(3)}
+          {this.renderSquare(4)}
+          {this.renderSquare(5)}
+        </div>
+        <div className="row">
+          {this.renderSquare(6)}
+          {this.renderSquare(7)}
+          {this.renderSquare(8)}
+        </div>
+      </div>
+    );
+  }
+}
+
+export default Board;
