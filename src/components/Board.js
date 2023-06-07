@@ -3,13 +3,11 @@ import Square from './Square.js';
 
 export default class Board extends React.Component {
   renderSquare(i) {
-    const winLine = this.props.winLine;
     return (
       <Square
-      key={i}
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
-        highlight={winLine && winLine.includes(i)}
+        
       />
     );
   }

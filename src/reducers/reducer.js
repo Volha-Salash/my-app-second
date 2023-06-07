@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux'
-/*
 const InitialState = {
   history: [
     {
@@ -11,19 +9,51 @@ const InitialState = {
   isAscending: true,
   clickCount: 0 // добавленный счетчик
 };
-*/
 
-function historyReducer(state = [{ squares: Array(9).fill(null) }], action) {
+function rootReducer(state = InitialState, action) {
   switch (action.type) {
     case 'ADD_SQUARE':
-      return state.concat([{
-        squares: action.squares,
-        latestMoveSquare: action.latestMoveSquare
-      }]);
+      const history = state.history.slice(0, state.stepNumber + 1);
+      const current = history[history.length - 1];
+      const squares = current.squares.slice();
+      squares[action.index] = state.xIsNext ? 'X' : 'O';
+      
+      return {
+        ...state,
+        history: [...history, { squares }],
+        stepNumber: history.length,
+        xIsNext: !state.xIsNext,
+        
+      };
+      case 'JUMP_TO':
+        return {
+          ...state,
+          stepNumber: action.step,
+          xIsNext: action.step % 2 === 0,
+        };
+    case 'HANDLE_CLICK':
+      return {
+        ...state, 
+        xIsNext: action.xIsNext
+      }
+        ;
+    case 'HANDLE_SORT_TOGGLE':
+      return {
+        ...state, 
+        isAscending: !state.isAscending
+      };
+
+
+    case 'INCREMENT_CLICK_COUNT':
+      return {
+        ...state, 
+        clickCount: state.clickCount + 1
+      };
     default:
       return state;
   }
 }
+
 
 /*
 function historyReducer(state=InitialState, action) {
@@ -44,7 +74,7 @@ function historyReducer(state=InitialState, action) {
   }
 }
 */
-
+/*
 function stepNumberReducer(state = 0, action) {
   switch (action.type) {
     case 'JUMP_TO':
@@ -71,15 +101,15 @@ function isAscendingReducer(state = true, action) {
       return state;
   }
 }
-const InitialState = { clickCount: 0 };
-const clickCountReducer = (state = InitialState, action) =>{
-switch (action.type) {
-  case 'INCREMENT_CLICK_COUNT':
-    return {
-      ...state, clickCount: state.clickCount + 1
-    };
-  default: return state;
-}
+const InitialStateClick = { clickCount: 0 };
+const clickCountReducer = (state = InitialStateClick, action) => {
+  switch (action.type) {
+    case 'INCREMENT_CLICK_COUNT':
+      return {
+        ...state, clickCount: state.clickCount + 1
+      };
+    default: return state;
+  }
 };
 
 const rootReducer = combineReducers({
@@ -89,6 +119,7 @@ const rootReducer = combineReducers({
   isAscending: isAscendingReducer,
   clickCountReducer: clickCountReducer
 });
+*/
 
 export default rootReducer;
 

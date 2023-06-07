@@ -27,13 +27,17 @@ class _Game extends React.Component {
     const history = this.props.history.slice(0, this.props.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares).winner || squares[i]) {
-      return;
+   
+    if (this.props.xIsNext) {
+      squares[i] = 'X';
+    } else {
+      squares[i] = 'O';
     }
-    squares[i] = this.props.xIsNext ? "X" : "O";
+     
     this.props.addSquare(history, squares);
     this.props.handleClick(i);
     this.props.incrementClickCount();
+    
   }
 
   jumpTo(step) {
@@ -43,30 +47,30 @@ class _Game extends React.Component {
   handleSortToggle() {
     this.props.handleSortToggle();
   }
-
+  
 
   render() {
+    
     const history = this.props.history;
     const stepNumber = this.props.stepNumber;
     const current = history[stepNumber];
     const winInfo = calculateWinner(current.squares);
     const winner = winInfo.winner;
 
-    const moves = history.map((step, move) => {
-      const latestMoveSquare = step.latestMoveSquare;
-      const col = 1 + latestMoveSquare % 3;
-      const row = 1 + Math.floor(latestMoveSquare / 3);
-      const desc = move ?
-        `Go to move #${move} (${col}, ${row})` :
-        'Go to game start';
+    const moves = history.map((squares, move) => {
+      let description;
+      if (move > 0) {
+        description = 'Go to move #' + move;
+      } else {
+        description = 'Go to game start';
+      }
       return (
         <li key={move}>
-          {/* Bold the currently selected item */ 
-        }
-          <button
-            className={move === stepNumber ? 'move-list-item-selected' : ''}
-            onClick={() => this.props.jumpTo(move)}>{desc}
-          </button>
+          <button 
+          className={move === stepNumber ? 'move-list-item-selected' : ''}
+          onClick={() => this.props.jumpTo(move)}>{description}
+          
+           </button>
         </li>
       );
     });
@@ -94,6 +98,7 @@ class _Game extends React.Component {
               squares={current.squares}
               onClick={i => this.handleClick(i)}
               winLine={winInfo.line}
+                            
             />
         </div>
         <div className="game-info">

@@ -1,8 +1,8 @@
-export function addSquare(squares, latestMoveSquare) {
+export function addSquare(squares, history) {
   return {
     type: 'ADD_SQUARE',
     squares: squares,
-    latestMoveSquare: latestMoveSquare
+    history: history
   };
 }
 
