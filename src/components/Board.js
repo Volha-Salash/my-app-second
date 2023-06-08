@@ -2,11 +2,14 @@ import React from "react";
 import Square from "./Square";
 
 
+
 class Board extends React.Component {
+
   renderSquare(number) {
     return <Square number={number} />;
   }
   render() {
+    //const {handleClick} = this.props;
     return (
       <div>
         <div className="row">
@@ -24,6 +27,7 @@ class Board extends React.Component {
           {this.renderSquare(7)}
           {this.renderSquare(8)}
         </div>
+        
       </div>
     );
   }

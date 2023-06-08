@@ -10,6 +10,10 @@ class Game extends React.Component {
   handleClick = () => {
     this.props.incrementClickCount();
   };
+ /* componentDidMount(){
+    this.props.incrementClickCount();
+  }
+  */
 
   componentDidUpdate() {
     const { winner: stateWinner, squares, newWinner } = this.props;
@@ -24,9 +28,7 @@ class Game extends React.Component {
   }
 
   render() {
-    const { winner: stateWinner, isXPlaying, reset, clickCount } = this.props;
-
-    console.log('clickCount ' + clickCount)
+    const { winner: stateWinner, isXPlaying, reset, clickCount} = this.props;
 
     return (
       <div className="App">
@@ -35,13 +37,15 @@ class Game extends React.Component {
         ) : (
           <h2>{`Next Move ${isXPlaying ? "X" : "O"}`}</h2>)}
         <Board
-          handleClick={this.handleClick} />
+          handleClick={this.handleClick}
+           />
         <button className="reset-button" onClick={reset}>
           Reset
         </button>
-         <p>clickCount: {this.props.clickCount}</p>
+        <p>clickCount: {this.props.clickCount}</p>
       </div >
     );
+
   }
 }
 
@@ -71,6 +75,14 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
+/*
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ 
+    playCreator, winnerCreator, resetCreator, incrementClickCountCreator
+  }, dispatch);
+}
+*/
+
 const GameContainer = connect(mapStateToProps, mapDispatchToProps)(Game);
 
 export default function GameFunc(props) {
@@ -80,3 +92,4 @@ export default function GameFunc(props) {
     </GameContainer>
   );
 }
+

@@ -12,8 +12,7 @@ class Square extends React.Component {
       return true;
     }
     if (
-      nextProps.getSquare(nextProps.number) ===
-      this.props.getSquare(this.props.number)
+      nextProps.getSquare(nextProps.number) === this.props.getSquare(this.props.number)
     ) {
       return false;
     }
@@ -26,7 +25,7 @@ class Square extends React.Component {
      */
 
   handleClick = (number) => {
-    const { getSquare, winner, play } = this.props;
+    const { getSquare, winner, play, } = this.props;
 
 
     if (!winner && !getSquare(number)) {

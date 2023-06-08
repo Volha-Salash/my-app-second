@@ -37,7 +37,7 @@ const initialState = {
 //Reducer
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
-    case "PLAY":
+    case PLAY:
       const squares = state.squares.slice();
       if (!state.winner) {
         if (state.isXPlaying) {
@@ -52,15 +52,15 @@ export default function rootReducer(state = initialState, action) {
         isXPlaying: !state.isXPlaying,
 
       };
-    case "INCREMENT_CLICK_COUNT":
+    case INCREMENT_CLICK_COUNT:
       return {
         ...state,
         clickCount: state.clickCount + 1
-        
-      };
-      
 
-    case "WINNER":
+      };
+
+
+    case WINNER:
       const winner = action.payload.winner.winner;
       const winningConfig = action.payload.winner.winningConfig;
 
@@ -70,19 +70,16 @@ export default function rootReducer(state = initialState, action) {
         winningConfig
       };
 
-    case "RESET":
-      if (action.type === RESET) {
-        const squares = new Array(9).fill(null);
-        return {
-          ...state,
-          isXPlaying: true,
-          winner: null,
-          winningConfig: [],
-          squares
-        };
-        
-      }
-// eslint-disable-next-line
+    case RESET:
+      return {
+        ...state,
+        isXPlaying: true,
+        winner: null,
+        winningConfig: [],
+        squares: Array(9).fill(null),
+        clickCount: 0
+      };
+
     default: return state;
   }
 }
