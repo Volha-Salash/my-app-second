@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { playCreator } from '../reducers/reducer.js';
 
-//Question: How to only redender the squares that have been changed
 
 class Square extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -20,15 +19,16 @@ class Square extends React.Component {
     }
     return true;
   }
-
-   componentDidUpdate() {
-     console.log("Square.js Updated for ", this.props.number);
-   }
+  /*
+     componentDidUpdate() {
+       console.log("Square.js Updated for ", this.props.number);
+     }
+     */
 
   handleClick = (number) => {
     const { getSquare, winner, play } = this.props;
 
-   
+
     if (!winner && !getSquare(number)) {
       play(number);
     }
@@ -36,7 +36,6 @@ class Square extends React.Component {
   render() {
     const { number, getSquare, winningConfig } = this.props;
 
-    //Check if current square number is part of winningConfig
     let squareClass = "square";
     const isPartOfWinningConfig = winningConfig.includes(number);
     if (isPartOfWinningConfig) {
@@ -77,7 +76,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const SquareContainer = connect(mapStateToProps, mapDispatchToProps)(Square);
 
-export default function SqFunc (props) {
+export default function SqFunc(props) {
   return (
     <SquareContainer {...props}>
       <Square />

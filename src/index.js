@@ -10,6 +10,8 @@ const store = configureStore({
   reducer: rootReducer,
 })
 
+//console.log(store.getState());
+
 const root = createRoot(document.getElementById('root'));
 
 root.render(

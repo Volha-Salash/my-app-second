@@ -20,14 +20,12 @@ export const winnerCreator = (winner) => ({
 export const resetCreator = () => ({
   type: RESET
 });
-export const incrementClickCount = () => ({
+export const incrementClickCountCreator = () => ({
   type: INCREMENT_CLICK_COUNT
 });
 
 
-
 //Initial State
-
 const initialState = {
   squares: new Array(9).fill(null),
   isXPlaying: true,
@@ -38,52 +36,55 @@ const initialState = {
 
 //Reducer
 export default function rootReducer(state = initialState, action) {
-  if (action.type === PLAY) {
-    const squares = state.squares.slice();
-    
-    if (!state.winner) {
-      if (state.isXPlaying) {
-        squares[action.payload.number] = "X";
-      } else {
-        squares[action.payload.number] = "O";
+  switch (action.type) {
+    case "PLAY":
+      const squares = state.squares.slice();
+      if (!state.winner) {
+        if (state.isXPlaying) {
+          squares[action.payload.number] = "X";
+        } else {
+          squares[action.payload.number] = "O";
+        }
       }
-    }
+      return {
+        ...state,
+        squares,
+        isXPlaying: !state.isXPlaying,
 
-    return {
-
-      ...state,
-      squares,
-      isXPlaying: !state.isXPlaying,
-
-    };
-  }
-  if (action.type === INCREMENT_CLICK_COUNT) {
-    const InitialStateClick = { clickCount: 0 };
-         return {
-        ...state, InitialStateClick, clickCount: state.clickCount + 1
       };
-    }
+    case "INCREMENT_CLICK_COUNT":
+      return {
+        ...state,
+        clickCount: state.clickCount + 1
+        
+      };
+      
 
-if (action.type === WINNER) {
-  const winner = action.payload.winner.winner;
-  const winningConfig = action.payload.winner.winningConfig;
+    case "WINNER":
+      const winner = action.payload.winner.winner;
+      const winningConfig = action.payload.winner.winningConfig;
 
-  return {
-    ...state,
-    winner,
-    winningConfig
-  };
+      return {
+        ...state,
+        winner,
+        winningConfig
+      };
+
+    case "RESET":
+      if (action.type === RESET) {
+        const squares = new Array(9).fill(null);
+        return {
+          ...state,
+          isXPlaying: true,
+          winner: null,
+          winningConfig: [],
+          squares
+        };
+        
+      }
+// eslint-disable-next-line
+    default: return state;
+  }
 }
-if (action.type === RESET) {
-  const squares = new Array(9).fill(null);
-  return {
-    ...state,
-    isXPlaying: true,
-    winner: null,
-    winningConfig: [],
-    squares
-  };
-}
-return state;
-}
+
 

@@ -3,19 +3,12 @@ import Board from "./components/Board";
 import React from "react";
 import { connect } from "react-redux";
 import checkWinner from "./utils/checkWinner";
-import { winnerCreator, resetCreator, incrementClickCount } from './reducers/reducer';
+import { winnerCreator, resetCreator, incrementClickCountCreator } from './reducers/reducer';
 
 class Game extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      clickCount: 0 // добавленный счетчик
-    };
-  }
-  handleButtonClick = () => {
-    this.state({
-      clickCount: this.state.clickCount + 1
-    });
+
+  handleClick = () => {
+    this.props.incrementClickCount();
   };
 
   componentDidUpdate() {
@@ -25,28 +18,28 @@ class Game extends React.Component {
     if (winner && !stateWinner) {
       newWinner({
         winner,
-        winningConfig
+        winningConfig,
       });
     }
   }
+
   render() {
-    const { winner: stateWinner, isXPlaying, reset } = this.props;
+    const { winner: stateWinner, isXPlaying, reset, clickCount } = this.props;
+
+    console.log('clickCount ' + clickCount)
 
     return (
       <div className="App">
         {stateWinner ? (
           <h2>Winner is {stateWinner}</h2>
         ) : (
-          <h2>{`Next Move ${isXPlaying ? "X" : "O"}`}</h2>
-        )}
-        <Board />
+          <h2>{`Next Move ${isXPlaying ? "X" : "O"}`}</h2>)}
+        <Board
+          handleClick={this.handleClick} />
         <button className="reset-button" onClick={reset}>
           Reset
         </button>
-        <p>clickCount: {this.state.clickCount}</p>
-        <button
-          onClick={this.handleButtonClick}>this.props.incrementClickCount
-        </button>
+         <p>clickCount: {this.props.clickCount}</p>
       </div >
     );
   }
@@ -56,9 +49,12 @@ const mapStateToProps = (state) => {
   return {
     squares: state.squares,
     winner: state.winner,
-    isXPlaying: state.isXPlaying
+    isXPlaying: state.isXPlaying,
+    clickCount: state.clickCount
   };
 };
+
+
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -67,9 +63,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     reset() {
       dispatch(resetCreator());
+    },
+    incrementClickCount() {
+      dispatch(incrementClickCountCreator());
     }
   };
 };
+
 
 const GameContainer = connect(mapStateToProps, mapDispatchToProps)(Game);
 

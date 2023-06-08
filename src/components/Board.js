@@ -1,6 +1,7 @@
 import React from "react";
 import Square from "./Square";
 
+
 class Board extends React.Component {
   renderSquare(number) {
     return <Square number={number} />;
@@ -27,5 +28,6 @@ class Board extends React.Component {
     );
   }
 }
+
 
 export default Board;
