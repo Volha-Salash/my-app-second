@@ -6,10 +6,12 @@ import Square from "./Square";
 class Board extends React.Component {
 
   renderSquare(number) {
-    return <Square number={number} />;
+    return <Square number={number}
+    onClick={()=> this.props.handleClickCount(number)}
+   />;
   }
   render() {
-    //const {handleClick} = this.props;
+        
     return (
       <div>
         <div className="row">

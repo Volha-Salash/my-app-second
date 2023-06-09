@@ -7,7 +7,7 @@ import { winnerCreator, resetCreator, incrementClickCountCreator } from './reduc
 
 class Game extends React.Component {
 
-  handleClick = () => {
+  handleClickCount = () => {
     this.props.incrementClickCount();
   };
  /* componentDidMount(){
@@ -37,12 +37,12 @@ class Game extends React.Component {
         ) : (
           <h2>{`Next Move ${isXPlaying ? "X" : "O"}`}</h2>)}
         <Board
-          handleClick={this.handleClick}
+          handleClickCount={this.handleClickCount}
            />
         <button className="reset-button" onClick={reset}>
           Reset
         </button>
-        <p>clickCount: {this.props.clickCount}</p>
+        <p>clickCount: {clickCount}</p>
       </div >
     );
 

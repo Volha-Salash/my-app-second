@@ -25,11 +25,12 @@ class Square extends React.Component {
      */
 
   handleClick = (number) => {
-    const { getSquare, winner, play, } = this.props;
+    const { getSquare, winner, play, onClick } = this.props;
 
 
     if (!winner && !getSquare(number)) {
       play(number);
+      onClick()
     }
   };
   render() {
@@ -46,6 +47,7 @@ class Square extends React.Component {
         className={squareClass}
         onClick={() => {
           this.handleClick(number);
+          this.props.getSquare(this.props.number)
         }}
       >
         {getSquare(number)}
